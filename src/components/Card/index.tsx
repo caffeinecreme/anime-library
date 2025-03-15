@@ -2,22 +2,30 @@
 
 import Image from 'next/image';
 import imgPlaceholder from '../../app/img-placeholder.svg';
+import { FC } from 'react';
 
-const Card = () => {
+interface CardProps {
+  title: string;
+  imgSource: string;
+  type: string;
+  genres: string[];
+}
+
+const Card: FC<CardProps> = ({ title, imgSource, type, genres }) => {
   return (
     <div className='flex justify-center items-center flex-col'>
-      <div className='relative'>
+      <div className='relative h-72 overflow-hidden rounded-md mb-1.5'>
         <Image
-          src={imgPlaceholder}
+          src={imgSource || imgPlaceholder}
           alt='Image Placeholder'
-          className='rounded-md mb-1.5'
           height={400}
+          width={400}
         />
         <div className='absolute top-2 left-2 bg-gray-900 rounded-md p-2 text-xs'>
           TV
         </div>
       </div>
-      <h4 className='font-bold text-md text-center'>Anime Title</h4>
+      <h4 className='font-bold text-md text-center'>{title}</h4>
     </div>
   );
 };
