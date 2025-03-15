@@ -13,7 +13,7 @@ interface CardProps {
 const Card: FC<CardProps> = ({ title, imgSource, type }) => {
   return (
     <div className='flex justify-center items-center flex-col'>
-      <div className='relative h-72 overflow-hidden rounded-md mb-1.5'>
+      <div className='relative  overflow-hidden rounded-md mb-0.5 lg:mb-1.5 h-50 lg:h-72'>
         <Image
           src={imgSource || imgPlaceholder}
           alt='Image Placeholder'

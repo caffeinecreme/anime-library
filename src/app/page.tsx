@@ -97,7 +97,7 @@ export default function Home() {
         <SearchBar onSearch={handleSearch} initialValue={urlQuery} />
       </div>
 
-      <div className='grid grid-cols-6 gap-5 my-4'>
+      <div className='grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-5 my-4'>
         {allAnimeData.map((anime: any) => (
           <div key={anime.mal_id}>
             <Link href={`/anime/${anime.mal_id}/${slugify(anime.title)}`}>
