@@ -2,10 +2,12 @@
 
 import Card from '@/components/Card';
 import SearchBar from '@/components/SearchBar';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { API_URL } from './constants';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { slugify } from '@/utils/slugify';
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -16,8 +18,7 @@ export default function Home() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  const page = 1,
-    limit = 24;
+  const limit = 24;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -101,18 +102,16 @@ export default function Home() {
         <SearchBar onSearch={handleSearch} initialValue={urlQuery} />
       </div>
 
-      <h4 className='text-lg font-bold mb-6'>
-        <span className='text-purple-400'>Featured Today</span>
-      </h4>
       <div className='grid grid-cols-6 gap-5 my-4'>
         {allAnimeData.map((anime: any) => (
-          <div key={anime.mal_id || anime.rank}>
-            <Card
-              title={anime?.title}
-              imgSource={anime.images.webp.image_url}
-              type={anime.type}
-              genres={anime.genres}
-            />
+          <div key={anime.mal_id}>
+            <Link href={`/anime/${anime.mal_id}/${slugify(anime.title)}`}>
+              <Card
+                title={anime.title}
+                imgSource={anime.images.webp.image_url}
+                type={anime.type}
+              />
+            </Link>
           </div>
         ))}
       </div>

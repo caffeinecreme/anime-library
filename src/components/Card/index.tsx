@@ -8,10 +8,9 @@ interface CardProps {
   title: string;
   imgSource: string;
   type: string;
-  genres: string[];
 }
 
-const Card: FC<CardProps> = ({ title, imgSource, type, genres }) => {
+const Card: FC<CardProps> = ({ title, imgSource, type }) => {
   return (
     <div className='flex justify-center items-center flex-col'>
       <div className='relative h-72 overflow-hidden rounded-md mb-1.5'>
@@ -22,7 +21,7 @@ const Card: FC<CardProps> = ({ title, imgSource, type, genres }) => {
           width={400}
         />
         <div className='absolute top-2 left-2 bg-gray-900 rounded-md p-2 text-xs'>
-          TV
+          {type}
         </div>
       </div>
       <h4 className='font-bold text-md text-center'>{title}</h4>
