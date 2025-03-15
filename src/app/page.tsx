@@ -8,33 +8,28 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { slugify } from '@/utils/slugify';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export default function Home() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const urlQuery = searchParams.get('q') || '';
   const [searchTerm, setSearchTerm] = useState(urlQuery);
-  const [debouncedSearch, setDebouncedSearch] = useState(urlQuery);
+  const debouncedSearch = useDebounce(searchTerm, 500);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const limit = 24;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(searchTerm);
-
-      if (searchTerm) {
-        router.push(`?q=${encodeURIComponent(searchTerm)}`, {
-          scroll: false,
-        });
-      } else if (urlQuery) {
-        router.push('', { scroll: false });
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [searchTerm, router, urlQuery]);
+    if (debouncedSearch) {
+      router.push(`?q=${encodeURIComponent(debouncedSearch)}`, {
+        scroll: false,
+      });
+    } else if (urlQuery && debouncedSearch !== urlQuery) {
+      router.push('', { scroll: false });
+    }
+  }, [debouncedSearch, router, urlQuery]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
